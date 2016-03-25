@@ -3,7 +3,7 @@
 Converts test documentation to TestRail test cases
 
 
-## Documenation schemas
+## Documentation schemas
 
 ### Classic schema
 ```

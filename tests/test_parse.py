@@ -2,7 +2,7 @@ from doc2testrail import get, foo
 
 
 
-def test_parse_simple():
+def baz_test_parse_simple():
     from parse_classes import publisher
     from pprint import pprint
 

@@ -1,0 +1,34 @@
+info: Classic test documentation format config
+document_sections:
+  - document
+  - section
+  - title
+  - Text
+case_sections:
+  - suite_title
+  - case_title
+  - case_id
+  - case_description
+  - case_complexity
+  - case_steps
+  - case_expected_results
+structure:
+  suite_title:
+    path: document.title.Text
+  case_title:
+    path: section.title.Text
+  case_id:
+    path: section.title.Text
+    kw: ID
+  case_description:
+    path: section.title.Text
+    kw: Description
+  case_complexity:
+    path: section.title.Text
+    kw: Complexity
+  case_steps:
+    path: section.block_quote.enumerated_list
+    kw: Steps
+  case_expected_results:
+    path: section.title.Text
+    kw: Expected results

@@ -1,11 +1,11 @@
 # import urllib2, json, base64
 
-# from functools32 import lru_cache
 import requests
 import logging
 import base64
 
 from helpers import timeit
+
 
 
 class TestRailClient(object):
@@ -54,7 +54,10 @@ class TestRailClient(object):
         suites = self._query('GET', 'get_suites/{0}'.format(project['id']))
         return suites
 
-    def get_cases(self, project, **params):
+    def get_cases(self, project, suite):
+        params = {
+            'suite_id': suite['id'],
+        }
         cases = self._query('GET',
                             'get_cases/{0}'.format(project['id']), params=params)
         return cases

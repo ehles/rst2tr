@@ -46,6 +46,7 @@ class Suite:
     cases = []
 
     def __init__(self, title):
+        self.cases = []
         self.title = title
 
     def add_case(self, case):
@@ -80,7 +81,7 @@ class Constructor:
         elif element == 'case_title':
             case = Case(title=value)
             self.current_case = case
-            self.current_suite.add_case(self.current_case)
+            self.current_suite.add_case(case)
         elif element in ['case_id',
                          'case_description',
                          'case_complexity',
@@ -100,7 +101,10 @@ class Constructor:
             elif self.last_item == 'case_expected_results':
                 self.current_case.expected = value
             else:
-                logging.warning("Unknown item '{0}': {1} = {2}".format(self.last_item,
+                # logging.warning("Unknown item '{0}': {1} = {2}".format(self.last_item,
+                #                                                        element,
+                #                                                        value))
+                raise Exception("Unknown item '{0}': {1} = {2}".format(self.last_item,
                                                                        element,
                                                                        value))
             self.last_item = None

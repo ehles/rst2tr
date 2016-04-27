@@ -96,7 +96,8 @@ class TestDocumentationTranslator(nodes.GenericNodeVisitor):
 
                             break
                     else:
-                        logging.warning("Unknown tree path: {0}".format(curr_branch_path))
+                        # logging.warning("Unknown tree path: {0}".format(curr_branch_path))
+                        raise Exception("Unknown tree path: {0}".format(curr_branch_path))
                         # Reset tree paths
                         self.curr_path = ''
                         self.curr_subtree = self.document_tree
@@ -108,7 +109,8 @@ class TestDocumentationTranslator(nodes.GenericNodeVisitor):
                 self.level += 1
         else:
             # Unknown branch
-            logging.warning("Unknown branch: {}, text:{}".format(curr_branch_path, node))
+            # logging.warning("Unknown branch: {}, text:{}".format(curr_branch_path, node))
+            raise Exception("Unknown branch: {}, text:{}".format(curr_branch_path, node))
             self.curr_path = ''
             self.curr_subtree = self.document_tree
             self.level = 0

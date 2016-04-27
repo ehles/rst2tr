@@ -137,7 +137,7 @@ def upload_test_data(testrail_conf, sections):
                     raise Exception('Section "{0}" not found'.format(doc_section.title))
             logging.info('Process section: {}'.format(doc_section.title))
             for doc_case in doc_section.cases:
-                tr_cases = tclient.get_cases(tr_project, suite_id=tr_suite['id'])
+                tr_cases = tclient.get_cases(tr_project, tr_suite)
                 for tr_case in tr_cases:
                     if doc_case.case_id == tr_case['custom_test_group']:
                         logging.info('TestCase "{0}" found'.format(doc_case.case_id))

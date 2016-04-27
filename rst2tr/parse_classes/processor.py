@@ -4,13 +4,13 @@ from docutils import core
 from . import publisher
 
 
-def process_single_doc(doc_string):
+def process_single_doc(doc_string, doc_tree):
     reader = None
     parser = None
     writer = None
     pub = core.Publisher(reader,
                          parser,
-                         writer=publisher.TRWriter(),
+                         writer=publisher.TRWriter(doc_tree),
                          settings=None,
                          source_class=io.StringInput,
                          destination_class=io.StringOutput)
@@ -29,4 +29,4 @@ def process_single_doc(doc_string):
     pub.set_source(source=doc_string, source_path=None)
     pub.set_destination(destination=None, destination_path=None)
     output = pub.publish(enable_exit_status=False)
-    return output, pub
+    return output

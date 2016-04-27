@@ -1,0 +1,35 @@
+info: Modern test documentation format config
+model:
+  document:
+    title:
+      Text:
+        - item: suite_title
+    section: # Test Case title
+      title:
+        Text:
+          - item: case_title
+      field_list:
+        field:
+          field_body:
+            paragraph:
+              Text:
+                - item: item_value
+            enumerated_list:
+              list_item:
+                paragraph:
+                  Text:
+                    - item: case_single_step
+          field_name:
+            Text:
+              - item: case_id
+                kw: ID
+              - item: case_id
+                kw: ID
+              - item: case_description
+                kw: Description
+              - item: case_complexity
+                kw: Complexity
+              - item: case_expected_results
+                kw: Expected results
+              - item: case_steps
+                kw: Steps

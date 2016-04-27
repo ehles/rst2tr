@@ -1,0 +1,32 @@
+info: Classic test documentation format config
+model:
+  document:
+    title:
+        Text:
+          - item: suite_title
+    section: # Test Case title
+      title:
+        Text:
+          - item: case_title
+      section: # Test case sections
+        title:
+          Text:
+            - item: case_id
+              kw: ID
+            - item: case_description
+              kw: Description
+            - item: case_complexity
+              kw: Complexity
+            - item: case_expected_results
+              kw: Expected results
+            - item: case_steps
+              kw: Steps
+        block_quote:
+            enumerated_list:
+              list_item:
+                paragraph:
+                  Text:
+                    - item: case_single_step
+        paragraph:
+          Text:
+            - item: item_value

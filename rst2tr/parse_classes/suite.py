@@ -1,5 +1,6 @@
 import logging
 
+
 class Step:
     index = -1  # some invalid value for checking
     description = ''

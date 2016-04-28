@@ -1,50 +1,32 @@
 # doc2tr
 
-Converts test documentation to TestRail test cases
+Upload test documentation from reStructured to TestRail
 
+Documentation formats
+---------------------
+Currently prepared 'classic' and 'modern' formats:
+* [Classic](tests/data/classic.rst)
+* [Modern](tests/data/modern.rst)
 
-## Documentation schemas
+to add new documenstation format you should prepare *model-file* for them. There are model-files:
+* [Classic-model](formats/classic_model.yaml)
+* [Modern-model](formats/modern_model.yaml)
 
-### Classic schema
+Usage
+-----
 ```
-
-title
-section
-block_quote
-enumerated_list
-list_item
-paragraph
-
-
-document
-    title
-        Text
-    section
-        title
-            Text
-    section
-        title
-            Text
-    section
-        title
-            Text
-    
-        block_quote
-            enumerated_list
-                list_item		
-                    paragraph
-                        Text
-                list_item
+rst2tr.py -f formats/classic_model.yaml -d tests/data/classic.rst -v -s tests/data/tests/
 ```
-Where sections are 
-1. Test case title
-2. Test case ID
-3. Test case description
-4. Test case complexity
-5. Test case steps
-6. Test case expected results
+Command line parameters:
+* -v, --verbose - Enable debug output
+* -f, --format-file - Test documentation model-file
+* -d, --doc-file - Test documentation .rst file
+* -s, --doc-dir - Test documentation directory which contains suite of .rst files
 
-### Modern schema
-```
-here
-```
+Environment parameters:
+* TESTRAIL_URL - TestRail URL
+* TESTRAIL_USER - TestRail user's email
+* TESTRAIL_API_key - TestRail user's password or API-key
+* TESTRAIL_PROJECT - Project name
+* TESTRAIL_SUITE - Suite name
+* TESTRAIL_CREATE_SECTION - Create absent section or raise exception

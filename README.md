@@ -1,4 +1,4 @@
-# doc2tr
+# rst2tr
 
 Upload test documentation from reStructured to TestRail
 

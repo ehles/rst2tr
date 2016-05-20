@@ -52,8 +52,8 @@ def parse(rst_filename, format_filename):
     return res.suites
 
 
-def add_case(tr, section, doc_case):
-    logging.debug('Add TestCase "{0}"'.format(doc_case.title))
+def add_update_case(tr, tr_case, doc_case, section, milestone, custom_fields):
+    logging.debug('Process TestCase "{0}"'.format(doc_case.title))
     case_params = {
         # 'section_id': '',
         'title': doc_case.title,
@@ -61,44 +61,39 @@ def add_case(tr, section, doc_case):
         # 'type_id': '',
         # 'priority_id':'',
         # 'estimate':'',
-        # 'milestone_id':''
         'test_case_description': doc_case.description,
     }
+    if milestone is not None:
+        case_params['milestone_id'] = milestone['id']
     steps = []
     for step in doc_case.steps:
         steps.append({
             'content': step.description,
+            'expected': 'pass',
+        })
+    else:
+        # Add last step as expected result
+        steps.append({
+            'content': 'Expected result',
             'expected': doc_case.expected,
         })
     customs = {
         'custom_test_group': doc_case.case_id,
-        'custom_steps_separated': steps
-    }
-    tr.add_case(section['id'], dict(case_params, **customs))
 
-def update_case(tr, doc_case, tr_case):
-    logging.debug('Update TestCase "{0}"'.format(doc_case.title))
-    case_params = {
-        # 'section_id': '', # Section is not supported by update
-        'title': doc_case.title,
-        # 'template_id': '',
-        # 'type_id': '',
-        # 'priority_id':'',
-        # 'estimate':'',
-        # 'milestone_id':''
+        # TODO: Add configuration parameter for case steos field name
+        'custom_test_case_steps': steps,
+        # 'custom_steps_separated': steps
+
+        # FIXME: Redesign this hardcode for custom fields from RST docs.
+        'custom_case_complexity': tr.get_field_id('case_complexity', value=doc_case.complexity),
+
     }
-    steps = []
-    for step in doc_case.steps:
-        steps.append({
-            'content': step.description,
-            'expected': doc_case.expected,
-        })
-    customs = {
-        'custom_test_group': doc_case.case_id,
-        'custom_steps_separated': steps,
-        'custom_test_case_description': doc_case.description,
-    }
-    tr.update_case(tr_case['id'], dict(case_params, **customs))
+    customs.update(custom_fields)
+    if tr_case:
+        tr.update_case(tr_case['id'], dict(case_params, **customs))
+    else:
+        tr.add_case(section['id'], dict(case_params, **customs))
+
 
 def upload_test_data(testrail_conf, sections):
     logging.info('Upload test scenarios.')
@@ -119,8 +114,18 @@ def upload_test_data(testrail_conf, sections):
     # if not tr_suite:
     #     Exception('Suite {} not found.'.format(testrail_conf['suite']))
     ####################################################################################################################
+    customs = {
+        'custom_qa_team': testrail_conf['custom_qa_team']
+    }
 
     tr_project = tclient.find_project(testrail_conf['project'])
+
+    tr_milestone = None
+    if testrail_conf['milestone']:
+        tr_milestone = tclient.find_milestone(tr_project, testrail_conf['milestone'])
+        if not tr_milestone:
+            Exception('Milestone "{0}" not found'.format(testrail_conf['milestone']))
+
     if testrail_conf['suite']:
         tr_suite = tclient.find_suite(tr_project, testrail_conf['suite'])
         if not tr_suite:
@@ -141,12 +146,13 @@ def upload_test_data(testrail_conf, sections):
                 for tr_case in tr_cases:
                     if doc_case.case_id == tr_case['custom_test_group']:
                         logging.info('TestCase "{0}" found'.format(doc_case.case_id))
-                        update_case(tclient, doc_case, tr_case)
+                        # update_case(tclient, doc_case, tr_case)
+                        add_update_case(tclient, tr_case, doc_case, tr_section, tr_milestone, custom_fields=customs)
                         break
                 else:
                     logging.info('TestCase "{0}" not found in TestRail, create.'.format(doc_case.case_id))
-                    add_case(tclient, tr_section, doc_case)
-
+                    # add_case(tclient, tr_section, doc_case, tr_milestone, custom_fields=customs)
+                    add_update_case(tclient, None, doc_case, tr_section, tr_milestone, custom_fields=customs)
 
 if __name__ == '__main__':
     process()

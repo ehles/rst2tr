@@ -23,10 +23,14 @@ Command line parameters:
 * -d, --doc-file - Test documentation .rst file
 * -s, --doc-dir - Test documentation directory which contains suite of .rst files
 
+You could use both or one of -d and -s options.
+
 Environment parameters:
 * TESTRAIL_URL - TestRail URL
 * TESTRAIL_USER - TestRail user's email
 * TESTRAIL_API_key - TestRail user's password or API-key
 * TESTRAIL_PROJECT - Project name
+* TESTRAIL_MILESTONE - Milestone name
 * TESTRAIL_SUITE - Suite name
-* TESTRAIL_CREATE_SECTION - Create absent section or raise exception
+* TESTRAIL_CUSTOM_QA_TEAM - Custom case field row id for QA Team.
+* TESTRAIL_CREATE_SECTION - Create absent section or raise exception.

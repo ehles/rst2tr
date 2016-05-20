@@ -24,17 +24,17 @@ class Opts(object):
 
     def get_env(self):
         self.__env_opts = {
-            'testrail':{
+            'testrail': {
                 'url': os.getenv('testrail_url', ''),
                 'user': os.getenv('testrail_user', ''),
                 'api_key': os.getenv('testrail_api_key', ''),
-                'project_id': os.getenv('testrail_project_id', ''),
                 'project': os.getenv('testrail_project', ''),
                 'suite': os.getenv('testrail_suite', ''),
+                'milestone': os.getenv('testrail_milestone', ''),
 
-                'case_priority': os.getenv('testrail_case_priority', ''),
-                'case_type': os.getenv('testrail_case_type'),
-                'create_section': os.getenv('testrail_create_section', True)
+                'create_section': os.getenv('testrail_create_section', True),
+
+                'custom_qa_team': os.getenv('testrail_custom_qa_team', ''),
             }
         }
 

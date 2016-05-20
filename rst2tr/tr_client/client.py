@@ -1,16 +1,18 @@
 # import urllib2, json, base64
+from functools32 import lru_cache
 
 import requests
 import logging
 import base64
+import re
 
 from helpers import timeit
-
 
 
 class TestRailClient(object):
     user = ''
     token = ''
+
     def __init__(self, url, user, password):
         self._base_url = url
         self.update_token(user, password)
@@ -67,6 +69,15 @@ class TestRailClient(object):
                                params={'suite_id': suite['id']})
         return sections
 
+    def get_milestones(self, project):
+        milestones = self._query('GET', 'get_milestones/{0}'.format(project['id']))
+        return milestones
+
+    @lru_cache()
+    def get_case_fields(self):
+        fields = self._query('GET', 'get_case_fields/')
+        return fields
+
     def find_project(self, name):
         projects = self.get_projects()
         for project in projects:
@@ -90,6 +101,44 @@ class TestRailClient(object):
                 return section
         else:
             return None
+
+    def find_milestone(self, project, name):
+        milestones = self.get_milestones(project)
+        for milestone in milestones:
+            if milestone['name'] == name:
+                return milestone
+        else:
+            return None
+
+    def find_field(self, name, project_id=None):
+        fields = self.get_case_fields()
+        for field in fields:
+            if name == field['name']:
+                if project_id is not None and (
+                            not field['configs'][0]['context']['is_global'] or
+                            project_id not in field['configs'][0]['project_ids']):
+                    continue
+                return field
+        else:
+            return None
+
+    def get_field_id(self, field_name, project_id=None, value=None):
+        field = self.find_field(field_name, project_id)
+        if field:
+            if field['type_id'] == 6:
+                opts_str = field['configs'][0]['options']['items']
+                options = [i.split(',') for i in re.sub(r'(\d+,)', ';\g<0>', opts_str).split(';') if i]
+                for opt in options:
+                    if opt[1].replace('\n', '').replace(' ', '').lower() == value.lower():
+                        return opt[0]
+                else:
+                    raise Exception('Option with value "{0}" not found in "{1}"'.format(value, field_name))
+            else:
+                raise Exception('Field id is not applicable for this field "{0}" type "{1}"'.format(
+                    field['name'],
+                    field['type_id']))
+        else:
+            raise Exception('Field "{0}" in project "{1}" not found'.format(field_name, project_id))
 
     def add_section(self, project, suite, name):
         params = {

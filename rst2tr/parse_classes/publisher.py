@@ -97,7 +97,7 @@ class TestDocumentationTranslator(nodes.GenericNodeVisitor):
                             break
                     else:
                         # logging.warning("Unknown tree path: {0}".format(curr_branch_path))
-                        raise Exception("Unknown tree path: {0}".format(curr_branch_path))
+                        raise Exception("Unknown tree path: {0}, it's value: {1}".format(curr_branch_path, text))
                         # Reset tree paths
                         self.curr_path = ''
                         self.curr_subtree = self.document_tree

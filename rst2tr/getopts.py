@@ -13,6 +13,9 @@ class Opts(object):
         self.__parser.add_option("-v", "--verbose",
                                  action="store_true", dest="verbose", default=False,
                                  help="Enable debug output")
+        self.__parser.add_option("-n", "--noop",
+                                 action="store_true", dest="noop", default=False,
+                                 help="Only parse documentation without pushing to the server")
         self.__parser.add_option('-f', '--format-file', dest='format_file', default=None,
                                  help='Test documentation file format description.')
         self.__parser.add_option('-d', '--doc-file', dest='doc_file',

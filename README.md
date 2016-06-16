@@ -22,6 +22,7 @@ Command line parameters:
 * -f, --format-file - Test documentation model-file
 * -d, --doc-file - Test documentation .rst file
 * -s, --doc-dir - Test documentation directory which contains suite of .rst files
+* -n, --noop - Only check documentation formatting without pushing got the remote.
 
 You could use both or one of -d and -s options.
 

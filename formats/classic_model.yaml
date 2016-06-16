@@ -27,6 +27,14 @@ model:
                 paragraph:
                   Text:
                     - item: case_single_step
+                enumerated_list:
+                  list_item:
+                    Text:
+                      - item: case_single_step
+                bullet_list:
+                  bullet_list_item:
+                    Text:
+                      - item: case_single_step
         paragraph:
           Text:
             - item: item_value

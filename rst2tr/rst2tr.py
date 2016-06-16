@@ -37,7 +37,8 @@ def process():
                 if re_obj.match(f):
                     suites.extend(parse(filename, command_args.options.format_file))
 
-    upload_test_data(command_args.env['testrail'], suites)
+    if not command_args.options.noop:
+        upload_test_data(command_args.env['testrail'], suites)
 
 @timeit
 def parse(rst_filename, format_filename):

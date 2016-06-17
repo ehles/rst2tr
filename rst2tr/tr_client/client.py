@@ -4,6 +4,7 @@ from functools32 import lru_cache
 import requests
 import logging
 import base64
+import time
 import re
 
 from helpers import timeit
@@ -35,14 +36,25 @@ class TestRailClient(object):
             'Authorization': 'Basic %s' % self.token
         }
         logging.debug('Request {0} to {1}'.format(method, url))
-        response = requests.request(
-            method, url, allow_redirects=False, **kwargs)
-        if response.status_code >= 300:
-            raise Exception(
-                "Wrong response:\n"
-                "status_code: {0.status_code}\n"
-                "headers: {0.headers}\n"
-                "content: '{0.content}'".format(response))
+        while True:
+            response = requests.request(
+                method, url, allow_redirects=False, **kwargs)
+            if response.status_code == 429:
+                # get timeout from response or 1 second
+                timeout = float(response.headers.get('Retry-After', 1))
+                logging.debug('headers:{0}'.format(response.headers))
+                logging.info('Too many requests happens, wait {0} sec.'.format(timeout))
+                time.sleep(timeout)
+                continue
+            elif response.status_code >= 300:
+                raise Exception(
+                    "Wrong response:\n"
+                    "status_code: {0.status_code}\n"
+                    "headers: {0.headers}\n"
+                    "content: '{0.content}'".format(response))
+            else:
+                # no exceptions, all done
+                break
         result = response.json()
         if 'error' in result:
             logging.warning(result)

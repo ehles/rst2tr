@@ -73,3 +73,7 @@ Expected results
 ################
 
 Test-02. Expected results for all of the steps
+
+
+NOOP - use this as second TC for suite with single case
+-------------------------------------------------------

@@ -74,6 +74,9 @@ class TestDocumentationTranslator(nodes.GenericNodeVisitor):
                 # check value
                 logging.debug('Branch: {0}'.format(curr_branch_path))
                 for item in new_subtree:
+                    if text == 'NOOP':
+                        logging.debug("FOUND {0} - END OF FILE".format(text))
+                        break
                     if text == item.get('kw', None):
                         logging.debug("Found: {0} = {1}".format(item['item'], text))
                         self.output.add_element(item['item'], text)

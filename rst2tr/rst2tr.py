@@ -15,6 +15,7 @@ def setup_logger(loglevel=logging.INFO):
     FORMAT = '[%(asctime)-15s][%(levelname)-8s] %(message)s'
     logging.basicConfig(format=FORMAT, level=loglevel)
 
+
 @timeit
 def process():
     command_args = Opts()
@@ -39,6 +40,7 @@ def process():
 
     if not command_args.options.noop:
         upload_test_data(command_args.env['testrail'], suites)
+
 
 @timeit
 def parse(rst_filename, format_filename):

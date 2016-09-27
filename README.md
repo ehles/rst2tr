@@ -29,7 +29,7 @@ You could use both or one of -d and -s options.
 Environment parameters:
 * TESTRAIL_URL - TestRail URL
 * TESTRAIL_USER - TestRail user's email
-* TESTRAIL_API_key - TestRail user's password or API-key
+* TESTRAIL_API_KEY - TestRail user's password or API-key
 * TESTRAIL_PROJECT - Project name
 * TESTRAIL_MILESTONE - Milestone name
 * TESTRAIL_SUITE - Suite name

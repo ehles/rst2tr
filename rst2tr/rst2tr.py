@@ -4,6 +4,7 @@ import re
 import os
 import yaml
 import logging
+from copy import deepcopy
 from parse_classes import processor
 
 from helpers import timeit
@@ -25,7 +26,9 @@ def process():
         setup_logger()
     logging.debug("Command options: {0}".format(command_args.options))
     logging.debug("Command args: {0}".format(command_args.args))
-    logging.debug("Command env: {0}".format(command_args.env))
+    env = deepcopy(command_args.env)
+    env['testrail']['api_key'] = '*'*len(env['testrail']['api_key'])
+    logging.debug("Command env: {0}".format(env))
     suites = []
     if command_args.options.doc_file is not None:
         suites.extend(parse(command_args.options.doc_file, command_args.options.format_file))
